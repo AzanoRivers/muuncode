@@ -1,0 +1,48 @@
+.stack {
+  position: relative;
+  width: min(28rem, 100%);
+  aspect-ratio: 16 / 10;
+}
+
+@media (min-width: 1024px) {
+  .stack {
+    width: min(56rem, 100%);
+  }
+}
+
+.cardActive,
+.cardBack {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-card-bg);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cardActive {
+  z-index: 2;
+  transform: translate(0, 0) rotate(0deg) scale(1);
+  box-shadow: 0 0 16px var(--glow-blue);
+}
+
+.cardBack {
+  z-index: 1;
+  transform: translate(2rem, 2rem) rotate(3deg) scale(1.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardActive,
+  .cardBack {
+    transition: none;
+  }
+}

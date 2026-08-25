@@ -1,0 +1,80 @@
+/* Purely decorative background content, not real text meant to be copied (same
+   reasoning as IdeMenuBar's own brand mark): user-select: none cascades to every
+   descendant below, wordmark and shortcut hints alike. */
+.watermark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: var(--spacing-lg);
+  font-family: var(--ide-font-ui);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Same wordmark composition as BrandTitle, but desaturated/darkened via filter
+   (instead of MoonOrbitLogo's own usual neon blue -> purple -> pink glow) into a
+   shadowy, low-contrast mark: this pane's background, not a call to action. Reuses
+   --ide-color-titlebar-bg as the text color rather than adding a near-duplicate token,
+   its dark-gray value already reads as "shadowy" against --ide-color-editor-bg. */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-display);
+  font-size: 4.8rem;
+  font-weight: 700;
+  color: var(--ide-color-titlebar-bg);
+}
+
+.logo svg {
+  margin: 0 -0.6rem;
+  filter: grayscale(1) brightness(0.55);
+}
+
+.shortcuts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.shortcutRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+  font-size: var(--font-size-sm);
+  color: var(--ide-color-foreground);
+}
+
+/* Slightly faded: this label ("New File", "Show All Commands"...) is not real,
+   clickable text yet, just a hint, so it should read as a touch less prominent than
+   real UI text, without going as muted as a fully disabled control. */
+.shortcutLabel {
+  opacity: 0.75;
+}
+
+.keys {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+}
+
+.key {
+  padding: var(--spacing-2xs) var(--spacing-xs);
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+  color: var(--ide-color-foreground);
+  background: var(--ide-color-sidebar-bg);
+  border: 1px solid var(--ide-color-border);
+  border-radius: var(--radius-sm);
+}
+
+.keySeparator {
+  margin-right: var(--spacing-2xs);
+  color: var(--ide-color-file-outline);
+}

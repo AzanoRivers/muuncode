@@ -1,0 +1,21 @@
+.card {
+  background: var(--color-card-bg);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.card--blue {
+  background: var(--color-card-bg-blue);
+}
+
+.card--purple {
+  background: var(--color-card-bg-purple);
+}
+
+.card--red {
+  background: var(--color-card-bg-red);
+  border-color: var(--color-card-border-red);
+}

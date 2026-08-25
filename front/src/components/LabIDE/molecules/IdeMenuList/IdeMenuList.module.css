@@ -1,0 +1,35 @@
+/* Reset the default button-specific properties too, so a real, clickable item
+   (rendered as a <button>) looks identical to a static mock one (a plain <div>). */
+.item {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-2xs) var(--spacing-sm);
+  font-family: inherit;
+  font-size: var(--font-size-xs);
+  color: var(--ide-color-foreground);
+  white-space: nowrap;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Real color match: VS Code's own Menu widget applies this exact color
+   (menu.selectionBackground) on hover/focus (src/vs/base/browser/ui/menu/menu.ts),
+   same token IdeMenuBar's own button-open state already uses. */
+.item:hover {
+  background: var(--ide-color-menu-selection-bg);
+  color: var(--color-text);
+}
+
+/* Destructive items (e.g. File menu's "Delete Repository"): red at rest, a red-tinted
+   hover instead of the default blue selection, so it reads as a distinct, cautionary
+   action rather than a regular menu command. */
+.itemDanger {
+  color: var(--ide-color-danger);
+}
+
+.itemDanger:hover {
+  background: var(--ide-color-danger-bg);
+  color: var(--ide-color-danger);
+}

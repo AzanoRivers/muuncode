@@ -1,0 +1,148 @@
+/* Three-column layout (left/center/right), the same real mechanism VS Code's own
+   custom title bar uses to keep a centered title visually centered regardless of how
+   wide the surrounding menus/actions are (src/vs/workbench/browser/parts/titlebar/
+   titlebarpart.ts + media/titlebarpart.css): .left/.right share equal flex-grow so
+   they expand together, .center never competes with them for extra space. */
+.bar {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: 3.2rem;
+  padding: 0 var(--spacing-xs);
+  background: var(--ide-color-titlebar-bg);
+  border-bottom: 1px solid var(--ide-color-border);
+  font-family: var(--ide-font-ui);
+}
+
+.left,
+.right {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.right {
+  justify-content: flex-end;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+/* Modeled on VS Code's real "Command Center" pill (background/border/radius/height),
+   filled with a GitHub mark plus "{repoName} / {openFileName}", read as a path rather
+   than VS Code's own real window-title format (which uses ' - ', never an em dash).
+   Real width proportions (~38vw, capped) reused as the actual collision guard against
+   the left/right toolbars; each label is pre-truncated in JS (see truncateIdeLabel.ts)
+   so the common case never even reaches this max-width or its ellipsis fallback. */
+.titlePill {
+  height: 2.2rem;
+  max-width: min(38vw, 60rem);
+  padding: 0 var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  background: var(--ide-color-titlebar-hover-bg);
+  border: 1px solid var(--ide-color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  color: var(--ide-color-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.titlePill svg {
+  flex-shrink: 0;
+  color: var(--ide-color-file-outline);
+}
+
+/* A real link (opens Home in a new tab), styled to read as a logo/wordmark rather
+   than as clickable text: anchor defaults reset (color/underline), no text selection
+   (so it can't be copied like a normal string). gap is a small, deliberate amount:
+   enough that the logo doesn't crowd the surrounding letters, not so much that it
+   reads as a separate, detached element. */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0 var(--spacing-sm) 0 var(--spacing-2xs);
+  font-family: var(--font-display);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-text);
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.brand:focus-visible {
+  outline: 2px solid var(--ide-color-menu-selection-bg);
+  outline-offset: -2px;
+}
+
+.brand svg {
+  margin: 0 -0.1rem;
+  /* A small optical nudge upward: centered via flex align-items like the
+     surrounding letters, it still read as sitting slightly too low next to them. */
+  transform: translateY(-0.15rem);
+}
+
+.menuWrapper {
+  position: relative;
+  height: 100%;
+}
+
+.menuButton,
+.menuButtonOpen {
+  height: 100%;
+  padding: 0 var(--spacing-xs);
+  font-family: inherit;
+  font-size: var(--font-size-xs);
+  color: var(--ide-color-foreground);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* A lighter overlay, not --ide-color-list-hover-bg: that color is darker than the
+   sidebar background it was tuned for, so it read as an odd dark smudge against this
+   bar's own lighter titlebar background instead of a matching subtle highlight. */
+.menuButton:hover {
+  background: var(--ide-color-titlebar-hover-bg);
+}
+
+.menuButtonOpen {
+  background: var(--ide-color-menu-selection-bg);
+  color: var(--color-text);
+}
+
+/* No transition/animation here on purpose: this round only proves the toggle
+   mechanism itself, appearing instantly, per the user's explicit request. */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  min-width: 20rem;
+  padding: var(--spacing-2xs) 0;
+  background: var(--ide-color-menu-bg);
+  border: 1px solid var(--ide-color-menu-border);
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.4);
+}
+
+/* The settings menu sits at the far right edge of the bar: a left-aligned dropdown
+   would overflow past the viewport's right edge, so it opens leftward from its
+   button instead. */
+.dropdownRight {
+  left: auto;
+  right: 0;
+}

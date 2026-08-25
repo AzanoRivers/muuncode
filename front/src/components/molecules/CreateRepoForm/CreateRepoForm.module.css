@@ -1,0 +1,95 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+}
+
+.label {
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+/* font-size: var(--font-size-base) (16px) on both fields, never smaller: iOS Safari
+   auto-zooms into any input with a computed font-size below 16px. */
+.input,
+.textarea {
+  width: 100%;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-card-border);
+  background-color: transparent;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  transition: border-color 0.2s ease;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.input:focus-visible,
+.textarea:focus-visible {
+  outline: none;
+  border-color: var(--color-neon-blue);
+}
+
+.textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.visibilityOptions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.visibilityOption {
+  flex: 1;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-card-border);
+  background-color: transparent;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.visibilityOption:hover,
+.visibilityOption:focus-visible {
+  border-color: var(--color-neon-blue);
+}
+
+/* Mirrors VisibilityTag's own Public/Private color split (green/purple), so the
+   selectable control here reads as the same concept, not a competing color scheme. */
+.visibilityOptionPublic {
+  border-color: var(--color-neon-green);
+  color: var(--color-neon-green);
+  background-color: var(--color-card-bg-blue);
+}
+
+.visibilityOptionPrivate {
+  border-color: var(--color-neon-purple);
+  color: var(--color-neon-purple);
+  background-color: var(--color-card-bg-purple);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input,
+  .textarea,
+  .visibilityOption {
+    transition: none;
+  }
+}

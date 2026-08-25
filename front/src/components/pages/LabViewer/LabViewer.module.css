@@ -1,0 +1,96 @@
+/* Loading/resolving state only (while lib/sessionResolution.ts's check is still in
+   flight): min-height, not a fixed height plus overflow: hidden, since there is no
+   scrollable content to guard against here. Still uses the marketing site's own
+   GridBackground/space theme, matching Station.tsx's own loader look, since this is
+   the same brand "getting you in" moment; the real editor shell below deliberately
+   does not. */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg) var(--spacing-sm);
+  text-align: center;
+}
+
+.message {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+  opacity: 1;
+  transition: opacity 0.7s ease-in;
+}
+
+/* Matches LaunchLoader.module.css's own .box exit fade (same 0.7s ease-in), so the
+   "Buen viaje..."/farewell text disappears together with the rocket instead of
+   lingering on screen after it has already flown off. */
+.messageExiting {
+  opacity: 0;
+}
+
+/* Sits behind .shell for exactly SHELL_FADE_IN_MS (LabViewer.tsx) while it fades in,
+   so the editor's dark background genuinely blends into this blue instead of the two
+   cutting between each other with nothing in between. */
+.transitionBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+/* The real editor shell (once resolveSession() reaches 'ready'): a fixed-height,
+   non-scrolling column (menu bar, path bar, then the body row), deliberately using the
+   IDE-specific dark tokens (tokens.css's --ide-* section) instead of the marketing
+   site's neon space theme: a working tool, not a landing/status page. Fades in on
+   mount (over .transitionBackdrop's blue) rather than appearing instantly. */
+.shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--ide-color-editor-bg);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell {
+    animation: none;
+  }
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.editorArea {
+  flex: 1;
+  min-width: 0;
+  background: var(--ide-color-editor-bg);
+}
+
+/* Temporary content for both IdeModal instances below (command palette, commit
+   modal): proves the keybinding -> modal wiring works, not the real content of
+   either, see features/f05_ide_viewer_page/local-storage-and-commit-model.md for
+   what actually belongs here once built. */
+.modalPlaceholder {
+  margin: 0;
+  font-size: var(--font-size-base);
+  color: var(--ide-color-foreground);
+}

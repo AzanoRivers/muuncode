@@ -1,0 +1,36 @@
+.badge {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-neon-blue);
+  box-shadow:
+    0 0 4px var(--glow-blue),
+    0 0 12px var(--glow-purple);
+  animation: pulseGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 4px var(--glow-blue),
+      0 0 12px var(--glow-purple);
+  }
+  50% {
+    box-shadow:
+      0 0 8px var(--glow-blue),
+      0 0 20px var(--glow-purple);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge {
+    animation: none;
+  }
+}

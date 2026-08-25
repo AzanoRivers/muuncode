@@ -1,0 +1,104 @@
+/* Shared surface every size uses: real VS Code widget colors/radius/shadow (see
+   IdeModal.tsx's own reference notes), plus the shared open/close transition. */
+.modal {
+  z-index: 200;
+  /* pointer-events is inherited: without this, .centeringLayer's own
+     pointer-events: none (see below) would make the modal itself unclickable too. */
+  pointer-events: auto;
+  background: var(--ide-color-menu-bg);
+  border: 1px solid var(--ide-color-menu-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.4);
+  color: var(--ide-color-foreground);
+  font-family: var(--ide-font-ui);
+  animation: modalOpen 250ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top center;
+}
+
+.modal.closing {
+  animation: modalClose 150ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* No backdrop element for 'palette' (see IdeModal.tsx): positioned directly against
+   the viewport instead of centered by a flex parent, so it needs its own top/left.
+   margin-left (not transform: translateX) keeps horizontal centering independent of
+   the animation's own transform: scale, which would otherwise fight over the
+   transform property during the animated frames. */
+.sizePalette {
+  position: fixed;
+  top: 12vh;
+  left: 50%;
+  width: 60rem;
+  max-width: 90vw;
+  margin-left: -30rem;
+  padding: var(--spacing-sm);
+}
+
+/* No dimmed backdrop, by explicit user request: this only centers its one modal
+   child via flexbox (the palette centers itself instead, via its own left/margin
+   trick above). Invisible and pointer-events: none, so it never intercepts a click
+   itself; every size's outside-click-closes behavior comes from IdeModal.tsx's own
+   document-level containment check instead of a backdrop click handler. */
+.centeringLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.sizeSmall {
+  width: 40rem;
+  min-height: 24rem;
+  padding: var(--spacing-md);
+}
+
+/* Wider than .sizePalette (60rem) on purpose, plus a real min-height: with only a
+   short placeholder inside, a width-only difference from the palette (which has no
+   min-height, its own height is just whatever its one-line content needs) was not
+   enough to visually read as a clearly bigger tier. */
+.sizeMedium {
+  width: 70rem;
+  min-height: 40rem;
+  max-width: 90vw;
+  max-height: 90vh;
+  padding: var(--spacing-md);
+  overflow-y: auto;
+}
+
+.sizeLarge {
+  width: 80vw;
+  height: 80vh;
+  padding: var(--spacing-md);
+  overflow-y: auto;
+}
+
+@keyframes modalOpen {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modalClose {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.99);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal {
+    animation: none;
+  }
+}

@@ -1,0 +1,112 @@
+/*
+  Modern CSS reset, adapted from Josh Comeau
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+*:not(dialog) {
+  margin: 0;
+}
+
+html {
+  font-size: 62.5%; /* 62.5% of the ~16px browser default = 10px, so 1rem = 10px */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+/* No route in this app ever has a real reason to show the browser's own default
+   white background: every page (marketing site, the /lab editor shell) paints its
+   own dark background once its own CSS runs, but during a hard navigation
+   (Station/LabViewer's own window.location.href/replace calls, see their own files)
+   there is a brief gap between the old document unloading and the new one's CSS
+   applying. This is what shows through in that gap, so it must never be white. */
+html {
+  background: var(--color-bg);
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  background: var(--color-bg);
+}
+
+/* Opts every real cross-document navigation in this app (Station <-> LabViewer's own
+   window.location.href/replace calls, see their own files: this is a set of hard
+   page loads, not a client-side router) into the browser's native View Transitions
+   crossfade, so the old page fades into the new one instead of a hard cut. Chromium-
+   only today, same constraint this project already has for WebSerial/WebUSB (see
+   CLAUDE.md -> Browser Support Constraint): unsupported browsers just keep navigating
+   with no transition, never an error, so this is pure progressive enhancement. */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+#root {
+  isolation: isolate;
+}
+
+/* Custom desktop scrollbar theming, values pulled from tokens.css.
+   `scrollbar-color` (not the `::-webkit-scrollbar-thumb` rules below) is what
+   Chromium actually renders here when both are present with `scrollbar-width: thin`;
+   the `::-webkit-scrollbar-*` rules stay for browsers without `scrollbar-color`
+   support (Safari). Keep both sets of values in sync. */
+* {
+  scrollbar-color: var(--color-scrollbar-thumb) var(--color-bg);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar-thumb);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-scrollbar-thumb-hover);
+  box-shadow: 0 0 6px var(--glow-scrollbar-hover);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}

@@ -1,0 +1,90 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  max-width: 67.2rem;
+  margin: 0 auto;
+  padding: var(--spacing-lg) var(--spacing-sm);
+  padding-top: var(--spacing-xl);
+  text-align: center;
+}
+
+.description {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  text-align: left;
+}
+
+.philosophy {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  line-height: 1.7;
+  color: var(--color-text-muted);
+  text-align: left;
+}
+
+.techHtml {
+  color: var(--color-tech-html);
+}
+
+.techCss {
+  color: var(--color-tech-css);
+}
+
+.techJs {
+  color: var(--color-tech-js);
+}
+
+.leftColumn,
+.rightColumn,
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.rightColumn {
+  margin-top: calc(var(--spacing-xs) - var(--spacing-xl));
+  text-align: right;
+}
+
+@media (min-width: 768px) {
+  .content {
+    padding: var(--spacing-lg) var(--spacing-md);
+    padding-top: var(--spacing-xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .content {
+    max-width: 128rem;
+    display: grid;
+    grid-template-columns: minmax(32rem, 42rem) 1fr;
+    align-items: start;
+    column-gap: var(--spacing-xl);
+    row-gap: var(--spacing-sm);
+    text-align: left;
+  }
+
+  .leftColumn {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .rightColumn {
+    grid-column: 2;
+    grid-row: 1;
+    align-items: flex-end;
+    gap: var(--spacing-md);
+  }
+
+  .actions {
+    grid-column: 1 / -1;
+    align-items: center;
+  }
+}

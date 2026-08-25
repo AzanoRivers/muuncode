@@ -1,0 +1,545 @@
+/* margin-top adds deliberate outer space above the whole card (between the success
+   tagline Badge and this card), on top of .successContent's own uniform gap, without
+   touching that shared gap value (which would also loosen the tight BrandTitle-to-
+   Badge pair above it). See Station.module.css's .successContent. */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  margin-top: var(--spacing-sm);
+}
+
+/* The Card atom has no className prop, so its single rendered <div> is targeted via
+   this child selector (same precedent as Station.module.css's .signOutAction button).
+   It becomes a column flex container itself so its flex-resolved height reaches
+   .selector below it, and ultimately only .list ends up scrolling, never the page. */
+.wrapper > div {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  /* Overrides only Card's own bottom padding for this instance, so "Siguiente"
+     sits almost flush with the card's bottom edge. Top/left/right padding stay
+     exactly as Card provides them. This selector's specificity (class +
+     combinator + type) already beats Card.module.css's single-class .card rule,
+     so no !important is needed. */
+  padding-bottom: var(--spacing-2xs);
+}
+
+.selector {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: var(--spacing-2xs);
+  text-align: left;
+}
+
+/* Own dedicated, smaller gap between just the heading and hint, distinct from
+   .selector's own gap (which still separates this whole header block from the two
+   accordion sections below it). */
+.header {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--font-size-base);
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+}
+
+.hint {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+/* Wraps both AccordionPanels and the Siguiente action, kept in the DOM even while the
+   create-new confirmation summary is shown below the heading (see .confirmation and
+   .hiddenAccordionGroup), so CreateRepoForm's own local state (name/description/
+   visibility) never unmounts and loses the already-typed values on Cancelar. Its own
+   gap matches .selector's gap exactly at each breakpoint, so the total vertical space
+   consumed by all the fixed-size rows stays identical to the pre-Round-8 single-level
+   layout (see the height-measuring effect's fixedTotal calculation in RepoSelector.tsx,
+   which reads only .selector's own row-gap and still assumes it applies 3 times). */
+.accordionGroup {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: var(--spacing-2xs);
+  /* Replays every time this element goes from display:none back to visible (i.e.
+     every Cancelar click, since an element with no box is not part of the render
+     tree and any animation on it restarts once it gets one again): slides back in
+     from the left, the mirror of .confirmation's own slide-in-from-the-right
+     below, so going forward and going back read as opposite directions. */
+  animation: slideInFromLeft 0.3s ease;
+}
+
+.hiddenAccordionGroup {
+  display: none;
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(1.6rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-1.6rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* No extra margin here: just .selector's own gap separates this from the two
+   accordion sections above, so "Siguiente" reads snug against the card's bottom
+   edge. */
+.nextAction {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* Demotes the shared Button atom to a smaller, secondary size inside this compact
+   card, no className prop on Button itself (same precedent as Station.module.css's
+   .signOutAction button). */
+.nextAction button {
+  font-size: var(--font-size-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.nextAction button:hover,
+.nextAction button:focus-visible {
+  box-shadow: 0 0 6px var(--glow-blue);
+}
+
+/* AccordionPanel's .contentWrapper now has an explicit, JS-computed max-height
+   (see AccordionPanel.tsx/RepoSelector.tsx), so this can just be a normal,
+   unconditional flex:1 child filling that now-definite space: no more toggling
+   needed, since the ambiguity that toggle existed to work around (an
+   intrinsic/auto-sized ancestor mis-measuring a still-large descendant) no
+   longer applies once every ancestor above this point uses an explicit pixel
+   height rather than an auto/content-based one. position:relative anchors the
+   scroll-indicator overlays below against .list's own edges. */
+.listWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* flex:1 fills .listWrapper's now-definite height (see above), overflow-y:auto
+   scrolling past whatever does not fit. No static max-height (an earlier, since
+   abandoned approach): a fixed rem value cannot adapt to the real browser
+   viewport height, which caused the list to overflow its own panel and overlap
+   Siguiente on shorter viewports. */
+.list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  /* Right padding keeps the scrollbar from sitting flush against the cards. */
+  padding-right: var(--spacing-xs);
+}
+
+/* A fixed-size flex item above .listWrapper/.emptyState (both still get the rest of
+   the panel's budget via their own flex: 1), same coexistence pattern already used
+   elsewhere in this panel's content column. */
+.activityNotice {
+  flex-shrink: 0;
+  margin: 0 0 var(--spacing-xs);
+  font-family: var(--font-body);
+  font-size: var(--font-size-2xs);
+  color: var(--color-text-muted);
+}
+
+.loadingMore {
+  flex-shrink: 0;
+  margin: 0;
+  padding: var(--spacing-2xs) 0;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--font-size-2xs);
+  color: var(--color-text-muted);
+}
+
+/* Scroll-edge indicators: thin overlays pinned to .listWrapper's edges, above the
+   scrollable .list, hinting that more content sits beyond the visible viewport.
+   Absolutely positioned (no layout participation) and pointer-events: none so they
+   never intercept clicks/keyboard focus meant for a RepoListItem underneath. The
+   right offset matches .list's own scrollbar padding, so the indicator never covers
+   the scrollbar track. */
+.scrollIndicatorTop,
+.scrollIndicatorBottom {
+  position: absolute;
+  left: 0;
+  right: var(--spacing-xs);
+  height: var(--spacing-sm);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Hidden until RepoSelector's onScroll handler flips isScrolledFromTop to true
+   (scrollTop > 0); nothing to hint at above the list while already at its top. */
+.scrollIndicatorTop {
+  top: 0;
+  border-top: 1px solid var(--color-card-border);
+  background: linear-gradient(to bottom, var(--color-card-bg), transparent);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.scrollIndicatorTopVisible {
+  opacity: 1;
+}
+
+/* Always visible: the list can always be scrolled further down (or is short enough
+   that scrolling is moot), so this one does not depend on scroll position. */
+.scrollIndicatorBottom {
+  bottom: 0;
+  border-bottom: 1px solid var(--color-card-border);
+  background: linear-gradient(to top, var(--color-card-bg), transparent);
+}
+
+/* Warning-toned empty state, shown instead of .listWrapper when the existing-repo
+   section has zero MuunCode-shaped repos to list. Reuses the same red-toned tokens as
+   Card's `.card--red` variant and StatusScreen's error icon, scoped to just this
+   accordion section rather than a full-page takeover: this is a valid, non-fatal
+   outcome (a real account with zero MuunCode projects), not an error. */
+.emptyState {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2xs);
+  padding: var(--spacing-sm);
+  text-align: center;
+  background: var(--color-card-bg-red);
+  border: 1px solid var(--color-card-border-red);
+  border-radius: var(--radius-md);
+}
+
+.emptyStateIcon {
+  display: flex;
+  color: var(--color-neon-red);
+}
+
+.emptyStateTagline {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.04em;
+  color: var(--color-neon-red);
+}
+
+.emptyStateMessage {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.emptyStateAction {
+  margin-top: var(--spacing-2xs);
+}
+
+/* Demotes the shared Button atom the same way .nextAction button already does
+   elsewhere in this card: a smaller, secondary size, not a full-size primary CTA. */
+.emptyStateAction button {
+  font-size: var(--font-size-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.emptyStateAction button:hover,
+.emptyStateAction button:focus-visible {
+  box-shadow: 0 0 6px var(--glow-blue);
+}
+
+/* Confirmation summary shown instead of .accordionGroup while a create-new submission
+   awaits the user's explicit confirmation (see repo-creation-confirmation-flow.md).
+   Centered, since this is a short, mostly-textual, one-off screen rather than a
+   scrollable list, and fills the same flex space .accordionGroup would otherwise use. */
+.confirmation {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  text-align: center;
+  padding: var(--spacing-sm);
+  /* Plays on every mount: React only ever renders this element while
+     showCreateConfirmation is true (a fresh conditional mount each time
+     Siguiente is clicked), so this naturally replays every time, sliding in
+     from the right, opposite .accordionGroup's own slide-in-from-the-left. */
+  animation: slideInFromRight 0.3s ease;
+}
+
+/* Icon and tagline read as one tight group (its own small gap), distinct from
+   .confirmation's own larger gap that now separates each of the summary's main
+   blocks (heading group / message box / warning / actions) from each other. */
+.confirmationHeading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-2xs);
+}
+
+.confirmationIcon {
+  display: flex;
+  position: relative;
+  color: var(--color-neon-blue);
+}
+
+/* Enters slightly above its resting spot and eases down into place, fading in
+   at the same time, rather than spinning (an earlier rotate-based attempt read
+   too much like a spinning fan blade). Isolated to its own inner span so the
+   sibling particles below are not affected by this transform. */
+.confirmationRocket {
+  display: flex;
+  animation: rocketDropIn 0.6s ease-out;
+}
+
+/* Small, subtle "loading fuel" sparks: fade in and drift slightly upward from
+   the rocket's base, looping while the confirmation screen stays open.
+   animation-delay staggers each one's start (and waits for the spin above to
+   settle first) so they read as an organic flicker, not a synchronized pulse. */
+.confirmationParticle {
+  position: absolute;
+  bottom: -0.2rem;
+  left: 50%;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background-color: var(--color-neon-blue);
+  opacity: 0;
+  animation: confirmationParticleSpark 1.6s ease-out infinite;
+}
+
+.confirmationParticle:nth-child(2) {
+  left: 42%;
+  animation-delay: 0.9s;
+}
+
+.confirmationParticle:nth-child(3) {
+  left: 58%;
+  animation-delay: 0.5s;
+}
+
+.confirmationParticle:nth-child(4) {
+  left: 50%;
+  animation-delay: 1.2s;
+}
+
+@keyframes rocketDropIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-0.8rem);
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes confirmationParticleSpark {
+  0%,
+  40% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.6);
+  }
+
+  55% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -0.9rem) scale(0.2);
+  }
+}
+
+.confirmationTagline {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  letter-spacing: 0.04em;
+  color: var(--color-neon-blue);
+}
+
+/* A proper card-like box for the confirmation message, reusing the same
+   glassmorphism treatment Card's own blue variant already uses, so this reads as
+   its own distinct block rather than plain floating text, and uses more of the
+   available card width (left-aligned, not centered, since a wide box of body
+   copy reads better that way than centered). */
+.confirmationMessageBox {
+  width: 100%;
+  padding: var(--spacing-sm);
+  text-align: left;
+  background: var(--color-card-bg-blue);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-md);
+}
+
+.confirmationMessage {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.confirmationHighlight {
+  color: var(--color-neon-blue);
+  font-weight: 600;
+}
+
+/* Warning-toned line, reusing the same red-toned tokens as .emptyState above (and
+   Card's own `.card--red` variant): deleting the .MuunCode folder is a genuinely
+   irreversible action worth calling out distinctly from the message above it. */
+.confirmationWarning {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-2xs);
+  width: 100%;
+  padding: var(--spacing-sm);
+  text-align: left;
+  background: var(--color-card-bg-red);
+  border: 1px solid var(--color-card-border-red);
+  border-radius: var(--radius-md);
+}
+
+.confirmationWarningIcon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--color-neon-red);
+}
+
+.confirmationWarningText {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.confirmationActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+/* Both actions share the exact same demoted size (the same treatment .nextAction
+   button/.emptyStateAction button already use elsewhere in this card), so Crear
+   and Cancelar read as equal-weight buttons, not one full-size and one demoted. */
+.confirmationPrimaryAction button,
+.confirmationSecondaryAction button {
+  font-size: var(--font-size-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.confirmationSecondaryAction button:hover,
+.confirmationSecondaryAction button:focus-visible {
+  box-shadow: 0 0 6px var(--glow-blue);
+}
+
+/* Crear reads as the more prominent, "this is the action that matters" button:
+   a filled purple tint instead of the plain transparent/blue-bordered look every
+   other button in this card uses, while staying within the existing palette (the
+   same purple already used for "private"/selected states elsewhere). */
+.confirmationPrimaryAction button {
+  border-color: var(--color-neon-purple);
+  background-color: var(--color-card-bg-purple);
+  color: var(--color-neon-purple);
+}
+
+.confirmationPrimaryAction button:hover,
+.confirmationPrimaryAction button:focus-visible {
+  border-color: var(--color-neon-purple);
+  box-shadow: 0 0 8px var(--glow-purple);
+}
+
+/* The existing-repo tab's "(MuunCode)" qualifier: smaller and NOT uppercased,
+   overriding AccordionPanel's .header rule (text-transform: uppercase,
+   font-size: var(--font-size-xs)) so the brand name still reads as "MuunCode"
+   (mixed case) rather than shouting the whole tab label, and takes up less
+   visual weight than the label itself. */
+.brandQualifier {
+  font-size: var(--font-size-2xs);
+  text-transform: none;
+  opacity: 0.8;
+}
+
+@media (min-width: 1024px) {
+  .wrapper {
+    max-width: 60rem;
+    /* margin-left/right (not the margin shorthand) so the base rule's margin-top
+       above stays intact instead of being reset to 0 by this override. */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .selector {
+    gap: var(--spacing-xs);
+    /* Bottom kept at 0, matching .wrapper > div's own bottom override above, so
+       "Siguiente" still sits almost flush with the card's bottom edge at this
+       breakpoint. Top/left/right stay at the Round 7 trim value. */
+    padding: var(--spacing-xs) var(--spacing-xs) var(--spacing-2xs);
+  }
+
+  /* Matches .selector's own gap override above, see .accordionGroup's own comment
+     for why both must stay equal. */
+  .accordionGroup {
+    gap: var(--spacing-xs);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollIndicatorTop {
+    transition: none;
+  }
+
+  .accordionGroup,
+  .confirmation {
+    animation: none;
+  }
+
+  .confirmationRocket {
+    animation: none;
+  }
+
+  .confirmationParticle {
+    display: none;
+  }
+}

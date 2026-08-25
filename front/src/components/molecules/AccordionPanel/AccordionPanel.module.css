@@ -1,0 +1,123 @@
+/* Layout direction only: sizing is handled by .contentWrapper's explicit max-height
+   below, not by toggling this element's own flex mode (see that rule's comment for
+   why a flex-mode toggle here proved unreliable). */
+.panel {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  min-height: 0;
+}
+
+.header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xs);
+  width: 100%;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.header:hover,
+.header:focus-visible {
+  border-color: var(--color-neon-blue);
+}
+
+.headerActive {
+  border-color: var(--color-neon-blue);
+  color: var(--color-neon-blue);
+}
+
+.labelGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  min-width: 0;
+}
+
+/* A small bullet marker at the start of each tab's label, so the two accordion
+   headers read visually as distinct tabs rather than plain text buttons. Its own
+   color always tracks the header's current text color (currentColor), so it stays
+   in sync with .headerActive's color change with no separate rule needed. */
+.bullet {
+  flex-shrink: 0;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.chevron {
+  flex-shrink: 0;
+  display: flex;
+  transition: transform 0.2s ease;
+}
+
+.chevronExpanded {
+  transform: rotate(180deg);
+}
+
+/* Single, never-class-swapped rule: max-height always reads --accordion-content-
+   height (a CSS custom property AccordionPanel.tsx sets to '0px' collapsed / the
+   real measured pixel value expanded, computed once per toggle by RepoSelector from
+   the actual available space in its own flex column, not per animation frame).
+   Confirmed in isolation that swapping WHICH RULE supplies max-height via a class
+   change does not reliably retrigger this browser's transition when the target
+   value comes through var(); keeping one stable rule and only ever changing the
+   variable's own value does. This replaced an earlier grid-template-rows (0fr/1fr)
+   + flex:1/auto toggle approach: that technique repeatedly proved unreliable for a
+   different reason, since a collapsed flex item with flex-basis:auto can still
+   report its real, full content size to an ancestor's own auto-height calculation
+   (a genuine CSS Grid/Flexbox intrinsic-sizing edge case), which starves a sibling
+   relying on flex-grow for space. Transitioning between two already-known pixel
+   values sidesteps that ambiguity entirely: nothing here is ever computed via
+   intrinsic/auto sizing. */
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: var(--accordion-content-height, 0px);
+  transition: max-height 0.3s ease;
+}
+
+/* flex:1/min-height:0 here is what actually passes .contentWrapper's now-definite,
+   max-height-bounded space down to .contentPadding/.list as a real constraint,
+   instead of letting the whole chain size to its own natural (unclamped) content and
+   only get visually, invisibly truncated by .contentWrapper's overflow:hidden with no
+   scrollbar ever appearing. overflow:hidden here too, since this is the flex item
+   that actually receives the constrained height. */
+.contentInner {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.contentPadding {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding-top: var(--spacing-xs);
+  overflow-y: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contentWrapper,
+  .chevron {
+    transition: none;
+  }
+}

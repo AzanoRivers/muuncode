@@ -1,0 +1,131 @@
+.box {
+  position: relative;
+  width: min(24rem, 100%);
+  height: 32rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-card-border);
+  background: var(--color-bg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.7s ease-in;
+}
+
+.exiting {
+  opacity: 0;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.rocketWrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation:
+    liftoff 1s cubic-bezier(0.34, 1.4, 0.64, 1) forwards,
+    bob 2.2s ease-in-out 1s infinite;
+}
+
+.rocketExiting {
+  animation: flyAway 0.7s ease-in forwards;
+}
+
+.flame {
+  width: 1.6rem;
+  height: 2.4rem;
+  margin-top: -0.4rem;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: radial-gradient(circle, var(--glow-blue) 0%, var(--glow-purple) 55%, transparent 80%);
+  animation: flamePulse 1.4s ease-in-out infinite;
+}
+
+.groundLabel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Matches LaunchLoader.tsx's GROUND_HEIGHT (24px), the canvas-drawn ground strip's
+     own height, so the label sits centered inside it, not floating above it. */
+  height: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Matches Button's typography (font, weight, spacing, uppercase), not the more
+     decorative title/tagline treatment used elsewhere on this screen. */
+  font-family: var(--font-display);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+@keyframes liftoff {
+  from {
+    /* Past .box's own 32rem height, so the rocket starts fully below the visible box
+       (clipped by its overflow: hidden) and rises INTO frame, instead of already
+       being visible sitting at the ground when this animation starts. */
+    transform: translateY(22rem);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes flyAway {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-26rem);
+    opacity: 0;
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes flamePulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rocketWrapper {
+    animation: none;
+  }
+
+  .rocketExiting {
+    animation: none;
+    opacity: 0;
+  }
+
+  .flame {
+    animation: none;
+    opacity: 0.6;
+  }
+}

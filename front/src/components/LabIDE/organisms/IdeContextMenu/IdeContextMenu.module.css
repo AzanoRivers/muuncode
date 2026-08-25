@@ -1,0 +1,12 @@
+.menu {
+  position: fixed;
+  top: var(--context-menu-top);
+  left: var(--context-menu-left);
+  z-index: 100;
+  min-width: 20rem;
+  padding: var(--spacing-2xs) 0;
+  background: var(--ide-color-menu-bg);
+  border: 1px solid var(--ide-color-menu-border);
+  box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.4);
+  font-family: var(--ide-font-ui);
+}

@@ -1,0 +1,1 @@
+export { IdeDeleteRepoModal } from './IdeDeleteRepoModal'

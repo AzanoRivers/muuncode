@@ -1,0 +1,70 @@
+/* Design tokens: one of the two global stylesheets allowed in this project (the other is reset.css). */
+:root {
+  /* Background */
+  --color-bg: #041528;
+  --color-grid-line: rgba(255, 255, 255, 0.06);
+
+  /* Neon accents (the MuunCode gradient is blue -> purple -> pink) */
+  --color-neon-blue: #0BD2FF;
+  --color-neon-purple: #B366FF;
+  --color-neon-pink: #FF69B4;
+  --color-neon-green: #04E9CF;
+  --color-neon-red: #FF5C5C;
+
+  /* Text */
+  --color-text: #F5F8FF;
+  --color-text-muted: rgba(245, 248, 255, 0.7);
+
+  /* Card surfaces (glassmorphism) */
+  --color-card-bg: rgba(4, 21, 40, 0.6);
+  --color-card-bg-blue: rgba(11, 210, 255, 0.1);
+  --color-card-bg-purple: rgba(179, 102, 255, 0.1);
+  --color-card-bg-red: rgba(255, 92, 92, 0.12);
+  --color-card-border: rgba(11, 210, 255, 0.35);
+  --color-card-border-red: rgba(255, 92, 92, 0.45);
+  --color-scrollbar-thumb: rgba(179, 102, 255, 0.5);
+  --color-scrollbar-thumb-hover: rgba(179, 102, 255, 0.75);
+  --color-notice-bg: rgba(11, 210, 255, 0.06);
+
+  /* Tech-stack highlight colors (bold inline mentions of HTML/CSS/JavaScript) */
+  --color-tech-html: #FF8A3D;
+  --color-tech-css: #6EC6FF;
+  --color-tech-js: #F7DF1E;
+
+  /* Glow variants (with alpha, for box-shadow/drop-shadow/text-shadow) */
+  --glow-blue: rgba(11, 210, 255, 0.8);
+  --glow-purple: rgba(179, 102, 255, 0.8);
+  --glow-pink: rgba(255, 105, 180, 0.7);
+  --glow-white: rgba(255, 255, 255, 0.5);
+  --glow-scrollbar-hover: rgba(179, 102, 255, 0.5);
+
+  /* Typography */
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+
+  /* Font sizes. Values assume 1rem = 10px (see reset.css) */
+  --font-size-2xs: 1rem;
+  --font-size-xs: 1.2rem;
+  --font-size-sm: 1.4rem;
+  --font-size-body: 1.5rem;
+  --font-size-base: 1.6rem;
+  --font-size-md: 2rem;
+  --font-size-title: 4rem;
+  --font-size-title-lg: 4.8rem;
+
+  /* Spacing and radii (small, HUD-like scale). Values assume 1rem = 10px (see reset.css) */
+  --radius-sm: 0.4rem;
+  --radius-md: 0.8rem;
+  --spacing-2xs: 0.4rem;
+  --spacing-xs: 0.8rem;
+  --spacing-sm: 1.6rem;
+  --spacing-md: 2.4rem;
+  --spacing-lg: 4rem;
+  --spacing-xl: 6rem;
+}
+
+/* The /lab editor shell's own design tokens (colors, fonts, fixed measurements) live
+   in components/LabIDE/ide-tokens.css instead of here: that palette is deliberately
+   separate from this marketing site's neon space theme (a working tool, not a
+   landing/status page), and is scoped to LabIDE's own components only, not global. */

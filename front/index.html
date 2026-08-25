@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg?v=3" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MuunCode - IDE</title>
+    <!-- Guards the very first paint against the browser's default white background,
+         before src/styles/reset.css even loads: in dev, Vite injects CSS via JS at
+         runtime (not a blocking <link>), so without this the white flash reset.css
+         is meant to prevent still happens on every hard navigation while developing.
+         Hardcoded to tokens.css's own --color-bg value (not a var() reference: no
+         stylesheet has run yet at this point), kept in sync with it by hand. -->
+    <style>
+      html, body { background: #041528; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

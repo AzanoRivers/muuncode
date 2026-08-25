@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd front && pnpm build",
+  "outputDirectory": "front/dist",
+  "functions": {
+    "api/*.ts": { "maxDuration": 10 }
+  }
+}

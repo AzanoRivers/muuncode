@@ -1,0 +1,120 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.warningBox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs);
+  background: var(--ide-color-danger-bg);
+  border: 1px solid var(--ide-color-danger-border);
+  border-radius: var(--radius-sm);
+}
+
+.warningIcon {
+  flex-shrink: 0;
+  display: flex;
+  color: var(--ide-color-danger);
+}
+
+.warningText {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+  color: var(--ide-color-foreground);
+}
+
+.instruction {
+  font-size: var(--font-size-xs);
+  color: var(--ide-color-foreground);
+}
+
+.repoName {
+  color: var(--color-text);
+}
+
+.input {
+  width: 100%;
+  height: 3.2rem;
+  padding: 0 var(--spacing-xs);
+  font-family: var(--ide-font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text);
+  background: var(--ide-color-editor-bg);
+  border: 1px solid var(--ide-color-border);
+  border-radius: var(--radius-sm);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--ide-color-danger);
+}
+
+.errorMessage {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: var(--ide-color-danger);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-2xs);
+  margin-top: var(--spacing-2xs);
+}
+
+.cancelButton,
+.confirmButton {
+  height: 3.2rem;
+  padding: 0 var(--spacing-sm);
+  font-family: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.cancelButton:disabled,
+.confirmButton:disabled {
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  color: var(--ide-color-foreground);
+  background: none;
+  border: 1px solid var(--ide-color-border);
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: var(--ide-color-list-hover-bg);
+}
+
+/* Stays visually "disabled" red even while enabled-but-unconfirmed (opacity), only
+   reaching full-strength red once the typed name actually matches: reinforces that
+   typing the exact repo name is what unlocks this action, not just a generic
+   disabled/enabled state. */
+.confirmButton {
+  color: var(--color-text);
+  background: var(--ide-color-danger-border);
+  border: 1px solid var(--ide-color-danger-border);
+  opacity: 0.5;
+}
+
+.confirmButton:not(:disabled) {
+  opacity: 1;
+}
+
+.confirmButton:hover:not(:disabled) {
+  background: var(--ide-color-danger);
+  border-color: var(--ide-color-danger);
+}

@@ -1,0 +1,1 @@
+export { BrowserSupportNotice } from './BrowserSupportNotice'

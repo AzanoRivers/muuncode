@@ -1,0 +1,66 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  height: var(--ide-row-height);
+  padding-left: calc(var(--tree-depth) * var(--ide-indent) + var(--spacing-2xs));
+  padding-right: var(--spacing-2xs);
+  font-family: var(--ide-font-ui);
+  font-size: var(--font-size-sm);
+  color: var(--ide-color-foreground);
+  white-space: nowrap;
+  cursor: default;
+}
+
+.row:hover {
+  background: var(--ide-color-list-hover-bg);
+}
+
+/* Drag and drop visuals only (no real move yet): matches VS Code's own real
+   FileDragAndDrop/listView.ts behavior and colors (list.dropBackground,
+   list.dropBetweenBackground), per this project's UI Reference Methodology.
+   box-shadow: inset, not a real border, so the indicator line never changes the
+   row's own height/layout. */
+.rowDragging {
+  opacity: 0.5;
+}
+
+.dropInside {
+  background: var(--ide-color-drop-bg);
+}
+
+.dropBefore {
+  box-shadow: inset 0 2px 0 0 var(--ide-color-file-outline);
+}
+
+.dropAfter {
+  box-shadow: inset 0 -2px 0 0 var(--ide-color-file-outline);
+}
+
+.twistie {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.4rem;
+  color: var(--ide-color-file-outline);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--ide-icon-size);
+  height: var(--ide-icon-size);
+  color: var(--ide-color-file-outline);
+}
+
+.iconFolder {
+  color: var(--ide-color-folder);
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

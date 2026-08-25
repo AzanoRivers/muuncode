@@ -1,0 +1,1 @@
+export { RepoIcon } from './RepoIcon'

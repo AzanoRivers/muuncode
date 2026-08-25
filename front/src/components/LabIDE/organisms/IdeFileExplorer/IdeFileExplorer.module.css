@@ -1,0 +1,167 @@
+.explorer {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 24rem;
+  height: 100%;
+  min-height: 0;
+  background: var(--ide-color-sidebar-bg);
+  border-right: 1px solid var(--ide-color-border);
+  font-family: var(--ide-font-ui);
+  transition: width 250ms ease;
+}
+
+/* Just wide enough for .collapseToggle's own icon: collapsing never fully removes the
+   panel, only shrinks it down to this thin strip. */
+.explorer.collapsed {
+  width: 3.2rem;
+}
+
+/* Everything except .collapseToggle itself (which must stay visible/clickable in
+   both states): fades out FAST with no delay when collapsing (finishes well before
+   .explorer's own 250ms width shrink does, so nothing is still visibly reflowing/
+   clipping mid-shrink), and fades back in only near the END of the width growing back
+   on expand (a 150ms delay before its own 150ms fade-in, timed against .explorer's
+   250ms width transition) so it never appears cramped inside a still-narrow panel.
+   Both directions are plain CSS, no JS timing: removing/adding .collapsed on
+   .explorer is what selects which of these two transition definitions applies. */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  opacity: 1;
+  transition: opacity 150ms ease 150ms;
+}
+
+.explorer.collapsed .content {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 80ms ease;
+}
+
+.sectionHeader {
+  flex-shrink: 0;
+  margin: 0;
+  padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-2xs);
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ide-color-sidebar-title-fg);
+}
+
+.repoName {
+  flex-shrink: 0;
+  margin: 0;
+  padding: var(--spacing-2xs) var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.tree {
+  flex: 1;
+  min-height: 0;
+}
+
+/* The bottom strip itself: always visible/clickable in both states, a plain row (not
+   a button) so it can hold more than one icon button later without restructuring.
+   Bottom-right when expanded (flex-end); collapsing narrows the whole panel down to
+   roughly one button's own width, so centering the row's content there once collapsed
+   reads more intentional than still pinning it to a "right edge" that is now nearly
+   the entire strip. */
+.bottomBar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2xs);
+  width: 100%;
+  height: 3.2rem;
+  padding: 0 var(--spacing-2xs);
+  border-top: 1px solid var(--ide-color-border);
+}
+
+.explorer.collapsed .bottomBar {
+  justify-content: center;
+}
+
+/* Current branch, left-aligned: visual only for now (see IdeFileExplorer.tsx's own
+   comment on branchName), the intended spot to switch branches from once the app
+   actually tracks more than one. Hidden outright when collapsed: the panel narrows
+   to roughly the icon button's own width, with no room left for this label at all. */
+.branchLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  min-width: 0;
+  height: 2.2rem;
+  padding: 0 var(--spacing-2xs);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--font-size-xs);
+  color: var(--ide-color-file-outline);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.branchLabel:hover {
+  background: var(--ide-color-titlebar-hover-bg);
+  color: var(--color-text);
+}
+
+.branchLabel svg {
+  flex-shrink: 0;
+}
+
+.explorer.collapsed .branchLabel {
+  display: none;
+}
+
+/* The collapse control itself: its own small square chip, not a bare icon floating in
+   the row. Modern VS Code toolbar action buttons (src/vs/base/browser/ui/toolbar) read
+   as a defined square tile, so this keeps a visible border rather than a hover-only
+   ghost button. */
+.iconButton {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  background: none;
+  border: 1px solid var(--ide-color-border);
+  border-radius: var(--radius-sm);
+  color: var(--ide-color-file-outline);
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  background: var(--ide-color-list-hover-bg);
+  border-color: var(--ide-color-file-outline);
+}
+
+/* Points left (collapse) when expanded, right (expand) when collapsed: ChevronIcon's
+   own base shape points down, rotate(90deg) turns it to point left, rotate(-90deg) to
+   point right. */
+.iconButton svg {
+  transform: rotate(90deg);
+  transition: transform 250ms ease;
+}
+
+.explorer.collapsed .iconButton svg {
+  transform: rotate(-90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .explorer,
+  .content,
+  .iconButton svg {
+    transition: none;
+  }
+}

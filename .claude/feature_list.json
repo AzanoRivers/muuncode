@@ -1,0 +1,58 @@
+[
+  {
+    "id": "f01",
+    "name": "environment_setup",
+    "description": "Scaffold the Vite + React + TypeScript frontend inside front/, remove default boilerplate, set up the Atomic Design folder skeleton and the single global CSS tokens file, and set a temporary favicon. No IDE features are built in this feature.",
+    "status": "done",
+    "phase": 1,
+    "feature_file": "features/f01_environment_setup/environment-setup.md"
+  },
+  {
+    "id": "f02",
+    "name": "login_screen_ui",
+    "description": "Build the static, fully-styled login/welcome screen: visual identity (AzanoLabs/ModusRatio design tokens), the MoonOrbitLogo, EN/ES copy via i18next with browser-only language detection (no URL routing), and the browser-support notice. No real GitHub OAuth in this feature. Additional scope added after first approval: a modern CSS reset, the 1rem = 10px base font-size convention, visual refinements (grid size, badge/card content presentation, GitHub icon, temporary 4-logo comparison), and the final logo pick (MoonOrbitLogo) with SVG favicon, desktop layout, card color variants, and the brand lockup.",
+    "status": "done",
+    "phase": 2,
+    "feature_file": "features/f02_login_screen_ui/login-screen-ui.md"
+  },
+  {
+    "id": "f03",
+    "name": "github_auth",
+    "description": "Wire the real GitHub sign-in flow per CLAUDE.md's already-decided architecture: a GitHub App (created by the user outside this repo), stateless Vercel serverless functions (token exchange, token refresh), and client-side token storage. Introduces api/ and vercel.json for the first time. Does not include repo creation, file read/write, or any other GitHub Contents/Git Data API usage; those are separate future features. Additional scope added after first approval: corrected serverless layout to root-level api/ (Vercel only auto-discovers functions there, not a backend/ glob), dev/prod split via VITE_API_BASE_URL + CORS, real GitHub-side sign-in and installation-state fixes (check-installation.ts, no localStorage heuristic), AuthCallback/LoginScreen renamed to Station/Home and moved templates/ -> pages/, and new StatusScreen/LaunchLoader/BrandTitle/WarningIcon UI for loading, error, 404, and 500 states.",
+    "status": "done",
+    "phase": 3,
+    "feature_file": [
+      "features/f03_github_auth/github-auth.md",
+      "features/f03_github_auth/vercel-architecture-correction.md",
+      "features/f03_github_auth/session-lifecycle-and-sign-in-flow.md",
+      "features/f03_github_auth/station-ux-and-status-screens.md"
+    ]
+  },
+  {
+    "id": "f04",
+    "name": "repository_selection_ui",
+    "description": "Repository selector/create-new-repo UI shown at /station once a user reaches the success state. Started as a fully responsive mockup, then grew a real accordion (create/existing tabs) and CreateRepoForm, then real GitHub data: listing/creating repos via @octokit/auth-app-minted installation tokens, sorting by real recent-push activity, folding the initial fetch into the existing rocket-launch loader, and filtering the existing-repo list to only repositories that already contain a `.MuunCode/workspace.json` (detected via one GitHub Code Search call per load, not per repo), with a warning-toned empty state and a shortcut button into the create-new tab when nothing matches. Next up (see new-repo-scaffold.md, not yet implemented): make a freshly created repo immediately qualify as a MuunCode project too, by committing `.MuunCode/workspace.json`, a bilingual README.md template, and a fixed bilingual GREETINGS.md welcome note as its first commits (auto_init turned off in favor of these real commits).",
+    "status": "in_progress",
+    "phase": 4,
+    "feature_file": [
+      "features/f04_repository_selection_ui/repository-selection-ui.md",
+      "features/f04_repository_selection_ui/visual-refinements.md",
+      "features/f04_repository_selection_ui/repository-creation-accordion.md",
+      "features/f04_repository_selection_ui/real-github-repo-data.md",
+      "features/f04_repository_selection_ui/new-repo-scaffold.md",
+      "features/f04_repository_selection_ui/repo-creation-confirmation-flow.md"
+    ]
+  },
+  {
+    "id": "f05",
+    "name": "ide_viewer_page",
+    "description": "New /lab route and LabViewer page (renamed from /ide and IdeViewer), the destination both the select-existing and create-new repo paths in f04 navigate to once confirmed. No longer reads ?owner=&repo= query params: a shared lib/sessionResolution.ts state machine (session -> token -> App installation -> lib/activeProject.ts's locally-persisted active project) resolves everything a direct /lab visit needs, bouncing to /station on anything short of fully ready; Home's 'Entrar a MuunCode' button reuses the same state machine to skip straight to /lab when everything is already valid. This round is still a stub otherwise: reuses Station's former 'Aqui Houston, luz verde' tagline + sign-out button as its initial content, plus a line showing which project is open. No editor (Monaco/dockview/file tree/device-display selection) yet; that is real future work of this same feature once this stub and its navigation contract exist.",
+    "status": "in_progress",
+    "notes": "reviewer-light approved the original stub round; the /lab rename + session-resolution round has not been through reviewer-light yet. Full reviewer not yet run as the final gate for either round.",
+    "phase": 5,
+    "feature_file": [
+      "features/f05_ide_viewer_page/ide-viewer-page.md",
+      "features/f05_ide_viewer_page/session-resolution-and-lab-rename.md"
+    ]
+  }
+]

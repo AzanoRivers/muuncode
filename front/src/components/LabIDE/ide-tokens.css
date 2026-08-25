@@ -1,0 +1,65 @@
+/* /lab editor shell design tokens: colors, fonts, and fixed measurements used ONLY by
+   components under components/LabIDE/. Deliberately separate from the marketing
+   site's own tokens.css/reset.css (the project's two truly global stylesheets): the
+   editor is a working tool with its own visual language, not a re-skin of the
+   marketing/landing pages. Scoped to a real, stable class name (.labIdeRoot, not a
+   CSS Module hash) applied once at the editor shell's own root element
+   (components/pages/LabViewer/LabViewer.tsx), the same way tokens.css itself scopes
+   its own tokens to :root; every LabIDE component reads these via var(), never a
+   literal value repeated in its own .module.css.
+
+   Colors: VS Code's own Dark+ defaults for the shell chrome (per CLAUDE.md's UI
+   Reference Methodology: src/vs/workbench/common/theme.ts, .../colors/baseColors.ts,
+   .../colors/listColors.ts, extensions/theme-defaults/themes/dark_vs.json), and the
+   "Material Icon Theme" VS Code extension (github.com/PKief/vscode-material-icon-theme,
+   MIT) for file/folder type colors, per explicit user request over VS Code's built-in
+   Seti theme. Every value below is a real, researched reference, not invented. */
+.labIdeRoot {
+  --ide-color-editor-bg: #1E1E1E;
+  --ide-color-foreground: #CCCCCC;
+  --ide-color-sidebar-bg: #252526;
+  --ide-color-sidebar-title-fg: #BBBBBB;
+  --ide-color-titlebar-bg: #3C3C3C;
+  --ide-color-titlebar-hover-bg: rgba(255, 255, 255, 0.08);
+  --ide-color-menu-bg: #252526;
+  --ide-color-menu-border: #454545;
+  --ide-color-menu-selection-bg: #0078D4;
+  --ide-color-list-hover-bg: #2A2D2E;
+  --ide-color-drop-bg: #062F4A;
+  --ide-color-border: #454545;
+  --ide-color-file-outline: #C5C5C5;
+
+  /* Destructive actions only (e.g. IdeDeleteRepoModal): VS Code's own real Dark+
+     errorForeground/inputValidation.error* values, not invented. */
+  --ide-color-danger: #F14C4C;
+  --ide-color-danger-bg: #5A1D1D;
+  --ide-color-danger-border: #BE1100;
+
+  /* File-type (and folder) colors: Material Icon Theme's real per-extension mapping.
+     Unlike Seti, every extension gets its own distinct color (JS and JSON no longer
+     share one), and folders get color too instead of staying monochrome. */
+  --ide-color-folder: #90A4AE;
+  --ide-color-file-html: #E65100;
+  --ide-color-file-css: #7E57C2;
+  --ide-color-file-js: #FFCA28;
+  --ide-color-file-json: #F9A825;
+  --ide-color-file-markdown: #42A5F5;
+  --ide-color-file-image: #26A69A;
+  --ide-color-file-glyph: #FFFFFF;
+  --ide-color-file-fold: rgba(255, 255, 255, 0.35);
+
+  /* Real code editors (VS Code included) use the OS's own UI font stack for their
+     chrome, not a branded webfont: --font-body (Space Grotesk) is kept only as a
+     graceful fallback, never the primary choice, for exactly this domain. */
+  --ide-font-ui: -apple-system, 'Segoe UI', Roboto, var(--font-body);
+  --ide-font-mono: var(--font-mono);
+
+  /* Fixed pixel measurements VS Code itself uses (row height, indent), converted to
+     this project's rem scale (1rem = 10px, see reset.css): real, not arbitrary, so the
+     file tree/menu bar feel proportioned like the editor they reference.
+     --ide-icon-size itself was later sized up beyond that real reference value, per
+     explicit user request for more visually prominent icons. */
+  --ide-row-height: 2.6rem;
+  --ide-indent: 1.6rem;
+  --ide-icon-size: 2.2rem;
+}

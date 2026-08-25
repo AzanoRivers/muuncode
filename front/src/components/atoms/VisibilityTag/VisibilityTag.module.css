@@ -1,0 +1,22 @@
+.tag {
+  display: inline-block;
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: var(--spacing-2xs) var(--spacing-xs);
+  border-radius: var(--radius-md);
+  border: 1px solid;
+}
+
+.public {
+  color: var(--color-neon-green);
+  border-color: var(--color-neon-green);
+}
+
+.private {
+  color: var(--color-neon-purple);
+  border-color: var(--color-neon-purple);
+}
