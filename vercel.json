@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd front && pnpm build",
+  "buildCommand": "cd front && pnpm install --frozen-lockfile && pnpm build",
   "outputDirectory": "front/dist",
   "functions": {
     "api/*.ts": { "maxDuration": 10 }
