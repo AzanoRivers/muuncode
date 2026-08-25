@@ -1,10 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { applyDevCors } from './lib/devCors'
-import { bootstrapEmptyRepoBranch } from './lib/githubBootstrapBranch'
-import { deleteRepo } from './lib/githubDeleteRepo'
-import { commitFiles, setDefaultBranch } from './lib/githubGitDataCommit'
-import { getInstallationInfo } from './lib/githubInstallationId'
-import { buildReadme, buildWorkspaceConfig, GREETINGS_MD } from './lib/repoScaffoldTemplates'
+import { applyDevCors } from './_lib/devCors'
+import { bootstrapEmptyRepoBranch } from './_lib/githubBootstrapBranch'
+import { deleteRepo } from './_lib/githubDeleteRepo'
+import { commitFiles, setDefaultBranch } from './_lib/githubGitDataCommit'
+import { getInstallationInfo } from './_lib/githubInstallationId'
+import { buildReadme, buildWorkspaceConfig, GREETINGS_MD } from './_lib/repoScaffoldTemplates'
 
 interface ScaffoldRepoBody {
   accessToken?: string

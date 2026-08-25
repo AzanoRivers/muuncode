@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { applyDevCors } from './lib/devCors'
-import { exchangeCodeForTokens } from './lib/githubOAuth'
+import { applyDevCors } from './_lib/devCors'
+import { exchangeCodeForTokens } from './_lib/githubOAuth'
 
 interface AuthExchangeBody {
   code?: string

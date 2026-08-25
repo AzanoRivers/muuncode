@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { applyDevCors } from './lib/devCors'
-import { deleteRepo } from './lib/githubDeleteRepo'
+import { applyDevCors } from './_lib/devCors'
+import { deleteRepo } from './_lib/githubDeleteRepo'
 
 interface DeleteRepoBody {
   accessToken?: string

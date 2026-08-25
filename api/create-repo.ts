@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { applyDevCors } from './lib/devCors'
+import { applyDevCors } from './_lib/devCors'
 
 interface CreateRepoBody {
   accessToken?: string

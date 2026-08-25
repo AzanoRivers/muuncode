@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { applyDevCors } from './lib/devCors'
-import { refreshGitHubTokens } from './lib/githubOAuth'
+import { applyDevCors } from './_lib/devCors'
+import { refreshGitHubTokens } from './_lib/githubOAuth'
 
 interface AuthRefreshBody {
   refreshToken?: string

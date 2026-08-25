@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { applyDevCors } from './lib/devCors'
-import { getInstallationAccessToken } from './lib/githubAppAuth'
-import { getInstallationInfo } from './lib/githubInstallationId'
+import { applyDevCors } from './_lib/devCors'
+import { getInstallationAccessToken } from './_lib/githubAppAuth'
+import { getInstallationInfo } from './_lib/githubInstallationId'
 
 interface ListReposBody {
   accessToken?: string
