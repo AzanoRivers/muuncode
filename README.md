@@ -13,13 +13,13 @@
 
 ## English
 
-1. [👋 Welcome](#welcome)
-2. [🌙 What is MuunCode](#what-is-muuncode)
-3. [🧰 What MuunCode enables today](#what-muuncode-enables-today)
-4. [🔧 Tech stack](#tech-stack)
-5. [🚧 Project status](#project-status)
+1. [Welcome](#welcome)
+2. [What is MuunCode](#what-is-muuncode)
+3. [What MuunCode enables today](#what-muuncode-enables-today)
+4. [Tech stack](#tech-stack)
+5. [Project status](#project-status)
 
-### <a id="welcome"></a>👋 Welcome
+### <a id="welcome"></a>1. WELCOME
 
 Hello! I'm AzanoRivers, and it excites me to think you're building something
 incredible. MuunCode exists to help people who want to create technology and put it
@@ -30,7 +30,7 @@ technologies, you can build solutions that can reach every sector. I wish you gr
 success in whatever you're building: think big, build bigger. With Colombian heart,
 AzanoRivers.
 
-### <a id="what-is-muuncode"></a>🌙 What is MuunCode
+### <a id="what-is-muuncode"></a>2. WHAT IS MUUNCODE
 
 MuunCode is an Open Source Embedded Development Platform designed to radically
 simplify firmware development by letting developers build embedded applications
@@ -42,7 +42,7 @@ dozens of firmware specific tools. MuunCode does not try to teach developers
 embedded programming, it brings embedded programming closer to the knowledge
 developers already have.
 
-### <a id="what-muuncode-enables-today"></a>🧰 What MuunCode enables today
+### <a id="what-muuncode-enables-today"></a>3. WHAT MUUNCODE ENABLES TODAY
 
 This repository covers the web IDE: the visual editor experience, code editing,
 linting, panel/window management, GitHub backed file handling, and browser based
@@ -62,7 +62,7 @@ Built so far in this repository:
   and a shared modal system. Monaco, the panel layout system, and real file
   editing are not built yet.
 
-### <a id="tech-stack"></a>🔧 Tech stack
+### <a id="tech-stack"></a>4. TECH STACK
 
 - React 19 with TypeScript, built with Vite.
 - `dockview` for the panel/window layout, Monaco Editor for the code editing
@@ -73,7 +73,7 @@ Built so far in this repository:
 - A small set of stateless Vercel serverless functions for the pieces that need a
   GitHub App client secret (OAuth token exchange and refresh).
 
-### <a id="project-status"></a>🚧 Project status
+### <a id="project-status"></a>5. PROJECT STATUS
 
 MuunCode is under active, early development. The pieces described above are real
 and working, but the platform is far from finished: this is a foundation, not a
@@ -83,13 +83,13 @@ finished product.
 
 ## Español
 
-1. [👋 Bienvenida](#bienvenida)
-2. [🌙 Qué es MuunCode](#qué-es-muuncode)
-3. [🧰 Qué permite hacer MuunCode hoy](#qué-permite-hacer-muuncode-hoy)
-4. [🔧 Stack tecnológico](#stack-tecnológico)
-5. [🚧 Estado del proyecto](#estado-del-proyecto)
+1. [Bienvenida](#bienvenida)
+2. [Qué es MuunCode](#qué-es-muuncode)
+3. [Qué permite hacer MuunCode hoy](#qué-permite-hacer-muuncode-hoy)
+4. [Stack tecnológico](#stack-tecnológico)
+5. [Estado del proyecto](#estado-del-proyecto)
 
-### <a id="bienvenida"></a>👋 Bienvenida
+### <a id="bienvenida"></a>1. BIENVENIDA
 
 Hola! Soy AzanoRivers y me emociona pensar que estás construyendo algo increible.
 MuunCode está pensado para ayudar a personas que quieran crear tecnología y ponerla
@@ -102,7 +102,7 @@ puedan llegar a todos los sectores.
 Te deseo muchos exítos en lo que sea que estés construyendo, piensa alto, construye
 en grande. Con Corazón Colombiano, AzanoRivers.
 
-### <a id="qué-es-muuncode"></a>🌙 Qué es MuunCode
+### <a id="qué-es-muuncode"></a>2. QUÉ ES MUUNCODE
 
 MuunCode es una Plataforma de Desarrollo Embebido de Código Abierto, diseñada para
 simplificar radicalmente el desarrollo de firmware, permitiendo a los
@@ -115,7 +115,7 @@ aprender docenas de herramientas específicas de firmware. MuunCode no busca
 enseñar programación embebida, sino acercar la programación embebida al
 conocimiento que los desarrolladores ya tienen.
 
-### <a id="qué-permite-hacer-muuncode-hoy"></a>🧰 Qué permite hacer MuunCode hoy
+### <a id="qué-permite-hacer-muuncode-hoy"></a>3. QUÉ PERMITE HACER MUUNCODE HOY
 
 Este repositorio cubre el IDE web: la experiencia del editor visual, la edición de
 código, el linting, el manejo de paneles/ventanas, y el manejo de archivos
@@ -137,7 +137,7 @@ Lo construido hasta ahora en este repositorio:
   Monaco, el sistema de layout de paneles, y la edición real de archivos todavía
   no están construidos.
 
-### <a id="stack-tecnológico"></a>🔧 Stack tecnológico
+### <a id="stack-tecnológico"></a>4. STACK TECNOLÓGICO
 
 - React 19 con TypeScript, construido con Vite.
 - `dockview` para el layout de paneles/ventanas, Monaco Editor para la superficie
@@ -151,7 +151,7 @@ Lo construido hasta ahora en este repositorio:
   partes que necesitan el client secret de la GitHub App (intercambio y
   refresco del token de OAuth).
 
-### <a id="estado-del-proyecto"></a>🚧 Estado del proyecto
+### <a id="estado-del-proyecto"></a>5. ESTADO DEL PROYECTO
 
 MuunCode está en desarrollo activo y temprano. Lo descrito arriba es real y
 funcional, pero la plataforma está lejos de estar terminada: esto es una base,
