@@ -53,6 +53,13 @@ interface LaunchLoaderProps {
   // mounted for the duration of that animation before switching to the next screen,
   // see Station.tsx's EXIT_ANIMATION_MS.
   exiting?: boolean
+  // Skips the 1s liftoff entrance (rocket climbing up from below frame) and starts
+  // already in its resting position, only bobbing. For a quick pass-through loader
+  // (e.g. LabViewer.tsx's change-repository/delete-repository transition) whose own
+  // total on-screen time is shorter than the liftoff itself: without this, the rocket
+  // was still below frame or mid-climb when the exit animation cut it off, reading as
+  // a moment with no rocket at all before it abruptly flew away.
+  instant?: boolean
 }
 
 // A tall "launch silo" box: a canvas draws a starfield and clouds continuously
@@ -60,7 +67,7 @@ interface LaunchLoaderProps {
 // plain RocketIcon with a CSS bob animation, not drawn on the canvas) reads as
 // climbing without ever actually moving from its spot. Shown by Station while it
 // verifies the GitHub session, a network round trip that takes a couple of seconds.
-export function LaunchLoader({ exiting = false }: LaunchLoaderProps) {
+export function LaunchLoader({ exiting = false, instant = false }: LaunchLoaderProps) {
   const { t } = useTranslation()
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -160,7 +167,9 @@ export function LaunchLoader({ exiting = false }: LaunchLoaderProps) {
   const boxClassName = exiting ? `${styles.box} ${styles.exiting}` : styles.box
   const rocketClassName = exiting
     ? `${styles.rocketWrapper} ${styles.rocketExiting}`
-    : styles.rocketWrapper
+    : instant
+      ? `${styles.rocketWrapper} ${styles.rocketInstant}`
+      : styles.rocketWrapper
 
   return (
     <div className={boxClassName}>

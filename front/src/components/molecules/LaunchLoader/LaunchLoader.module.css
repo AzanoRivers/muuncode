@@ -39,6 +39,13 @@
   animation: flyAway 0.7s ease-in forwards;
 }
 
+/* Skips the liftoff climb entirely, starting already at rest (see LaunchLoader.tsx's
+   own `instant` prop): only the idle bob loop plays, with no 1s delay before it starts
+   either (unlike .rocketWrapper's own liftoff-then-bob sequence). */
+.rocketInstant {
+  animation: bob 2.2s ease-in-out infinite;
+}
+
 .flame {
   width: 1.6rem;
   height: 2.4rem;
@@ -115,7 +122,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rocketWrapper {
+  .rocketWrapper,
+  .rocketInstant {
     animation: none;
   }
 

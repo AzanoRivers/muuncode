@@ -164,7 +164,7 @@ export function LabViewer() {
     return (
       <GridBackground>
         <main className={styles.content}>
-          <LaunchLoader exiting={isChangeRepoExiting} />
+          <LaunchLoader exiting={isChangeRepoExiting} instant />
           <p className={isChangeRepoExiting ? `${styles.message} ${styles.messageExiting}` : styles.message}>
             {t('labChangeRepoLabel')}
           </p>
