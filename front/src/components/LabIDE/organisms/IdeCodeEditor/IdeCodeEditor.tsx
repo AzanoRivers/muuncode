@@ -54,6 +54,12 @@ export function IdeCodeEditor({ codeTabs, activePath, isVisible, contents }: Ide
     const editor = monaco.editor.create(containerRef.current, {
       automaticLayout: true,
       theme: 'vs-dark',
+      // Was unset, so Monaco fell back to its own built-in default instead of this
+      // project's real --ide-font-mono token (Consolas on Windows, matching VS
+      // Code's own actual default editor.fontFamily there): a CSS custom property
+      // reference works fine here since Monaco just applies this string as a literal
+      // font-family value, resolved against .labIdeRoot's own inherited token.
+      fontFamily: 'var(--ide-font-mono)',
       fontSize: 13,
       minimap: { enabled: false },
     })

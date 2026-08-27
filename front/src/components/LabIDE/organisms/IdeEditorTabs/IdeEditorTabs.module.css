@@ -5,6 +5,9 @@
   background: var(--ide-color-titlebar-bg);
   border-bottom: 1px solid var(--ide-color-border);
   overflow-x: auto;
+  /* Was never set here, so every tab fell back to the browser's own generic
+     sans-serif default instead of VS Code's real OS-native UI font stack. */
+  font-family: var(--ide-font-ui);
 }
 
 .tab {
