@@ -20,7 +20,27 @@ organism, typed-confirmation delete, new `api/delete-repo.ts` endpoint, new
 in `api/lib/githubDeleteRepo.ts`) fixed immediately after. The rest of this
 streak (menu bar, file explorer, modals, transitions) still needs its own
 doc/review catch-up later.
-**Last updated**: 2026-08-23
+
+**2026-08-27**: also shipped the deploy pipeline itself (`git init`, first
+commit, `pnpm dev`/build fixes for a real pnpm workspace + Vercel monorepo
+build, `api/lib` -> `api/_lib` rename to stay under the Hobby plan's 12
+function limit, README with badges), all pushed to
+`github.com/AzanoRivers/muuncode` and live on Vercel. Then a real, planned
+feature round: file opening + editor tabs + Monaco, per
+`features/f05_ide_viewer_page/file-opening-and-editor-tabs.md` (research into
+real VS Code preview-tab/image-preview mechanisms first, plan written and
+approved, then implemented: single/double-click preview-vs-pinned tabs,
+`EditorTabsState` typed module, a real Monaco instance scoped to only the
+html/css/js/json/md languages MuunCode needs, an unsupported-file-type modal,
+and an image preview view). Worked through a genuine Vite 8/Rolldown
+resolution gap for `monaco-editor`'s own deep worker/language subpaths (see
+that spec file's own "Vite/Rolldown worker resolution gap" section for the
+fix). `pnpm build`/`pnpm lint` (`front/`) and root `pnpm exec tsc --noEmit`
+all pass; Ctrl+Z/Ctrl+X/Ctrl+V manually verified working inside Monaco via a
+temporary isolated smoke-test page (`/lab` itself needs a real GitHub
+session, not available in this environment). Not yet run through
+`reviewer-light`.
+**Last updated**: 2026-08-27
 
 ## Session Plan
 1. `f04` backend fixes (in the order they were actually found, live-tested by

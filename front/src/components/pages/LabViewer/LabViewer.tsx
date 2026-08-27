@@ -2,10 +2,24 @@ import { useEffect, useState, type MouseEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { GridBackground } from '@/components/atoms'
 import { LaunchLoader } from '@/components/molecules'
-import { IdeContextMenu, IdeDeleteRepoModal, IdeEditorWatermark, IdeFileExplorer, IdeMenuBar } from '@/components/LabIDE/organisms'
+import {
+  IdeCodeEditor,
+  IdeContextMenu,
+  IdeDeleteRepoModal,
+  IdeEditorTabs,
+  IdeEditorWatermark,
+  IdeFileExplorer,
+  IdeImagePreview,
+  IdeMenuBar,
+  IdeUnsupportedFileModal,
+} from '@/components/LabIDE/organisms'
 import { IdeModal } from '@/components/LabIDE/molecules'
 import { IDE_KEYBINDINGS, matchesKeybinding } from '@/components/LabIDE/keybindings'
 import { useDisableBrowserKeybindings } from '@/components/LabIDE/useDisableBrowserKeybindings'
+import { getFileKind } from '@/components/LabIDE/lib/fileKind'
+import { closeTab, INITIAL_EDITOR_TABS_STATE, openPinned, openPreview } from '@/components/LabIDE/editorTabs'
+import type { EditorTabsState } from '@/components/LabIDE/editorTabs'
+import { MOCK_FILE_CONTENTS, MOCK_IMAGE_SOURCES } from '@/components/LabIDE/mockFileContents'
 import '@/components/LabIDE/ide-tokens.css'
 import { clearGitHubTokens } from '@/lib/githubAuth'
 import { clearActiveProject } from '@/lib/activeProject'
@@ -15,10 +29,10 @@ import styles from './LabViewer.module.css'
 
 type ReadyResolution = Extract<SessionResolution, { status: 'ready' }>
 
-// Placeholder "already open" file, standing in for a real file-open interaction (not
-// wired up yet, see features/f05_ide_viewer_page): index.html is what a fresh
-// MuunCode project's own entry point would realistically be.
-const MOCK_OPEN_FILE = 'index.html'
+// Shown in the title pill (IdeMenuBar) whenever no tab is open yet: the fallback
+// mirrors what a fresh MuunCode project's own entry point would realistically be,
+// same value this constant already held before real tab tracking existed.
+const DEFAULT_OPEN_FILE_NAME = 'index.html'
 
 // Matches LaunchLoader.module.css's exit animation duration (rocket flying up out of
 // frame, box fading out), same constant Station.tsx uses for the same reason: this
@@ -60,7 +74,8 @@ export function LabViewer() {
   const [isChangingRepo, setIsChangingRepo] = useState(false)
   const [isChangeRepoExiting, setIsChangeRepoExiting] = useState(false)
   const [contextMenuPosition, setContextMenuPosition] = useState<{ x: number; y: number } | null>(null)
-  const [openModal, setOpenModal] = useState<'commandPalette' | 'commitModal' | 'deleteRepo' | null>(null)
+  const [openModal, setOpenModal] = useState<'commandPalette' | 'commitModal' | 'deleteRepo' | 'unsupportedFile' | null>(null)
+  const [editorTabs, setEditorTabs] = useState<EditorTabsState>(INITIAL_EDITOR_TABS_STATE)
   useDisableBrowserKeybindings()
 
   // Wires the two keybindings that already exist (keybindings.ts's IDE_KEYBINDINGS,
@@ -152,6 +167,29 @@ export function LabViewer() {
     })
   }
 
+  // Single click -> 'preview' (replaces the current preview tab in place), double
+  // click -> 'pinned' (opens/promotes a permanent tab): see editorTabs.ts and
+  // features/f05_ide_viewer_page/file-opening-and-editor-tabs.md for the real VS Code
+  // mechanism this mirrors. An unsupported extension never touches tab state at all,
+  // it only opens IdeUnsupportedFileModal.
+  const handleOpenFile = (path: string, name: string, mode: 'preview' | 'pinned') => {
+    const kind = getFileKind(name)
+    if (kind === 'unsupported') {
+      setOpenModal('unsupportedFile')
+      return
+    }
+
+    setEditorTabs((current) => (mode === 'preview' ? openPreview(current, path, name, kind) : openPinned(current, path, name, kind)))
+  }
+
+  const handleActivateTab = (path: string) => {
+    setEditorTabs((current) => ({ ...current, activePath: path }))
+  }
+
+  const handleCloseTab = (path: string) => {
+    setEditorTabs((current) => closeTab(current, path))
+  }
+
   // Replaces the browser's own native context menu with IdeContextMenu everywhere in
   // the editor shell, per explicit user request: an editor should own its right-click
   // menu, not defer to the browser's generic one.
@@ -205,7 +243,10 @@ export function LabViewer() {
   // rounds of features/f05_ide_viewer_page's real editor work: menu bar (which owns
   // the centered "which project/file is open" title pill itself, see IdeMenuBar), file
   // explorer (with visual-only drag and drop), and a custom right-click context menu;
-  // still no Monaco/dockview panel yet.
+  // still no dockview panel yet.
+  const activeTab = editorTabs.openTabs.find((tab) => tab.path === editorTabs.activePath) ?? null
+  const codeTabs = editorTabs.openTabs.filter((tab) => tab.kind === 'code')
+
   return (
     <>
       {/* Stays mounted for exactly SHELL_FADE_IN_MS after the shell below appears, so
@@ -219,15 +260,35 @@ export function LabViewer() {
       <div className={`${styles.shell} labIdeRoot`} onContextMenu={handleContextMenu}>
         <IdeMenuBar
           repoName={resolution.project.name}
-          openFileName={MOCK_OPEN_FILE}
+          openFileName={activeTab?.name ?? DEFAULT_OPEN_FILE_NAME}
           onChangeRepo={handleChangeRepo}
           onSignOut={handleSignOut}
           onDeleteRepo={() => setOpenModal('deleteRepo')}
         />
         <div className={styles.body}>
-          <IdeFileExplorer repoName={resolution.project.name} />
+          <IdeFileExplorer repoName={resolution.project.name} onOpenFile={handleOpenFile} />
           <main className={styles.editorArea}>
-            <IdeEditorWatermark />
+            <IdeEditorTabs
+              tabs={editorTabs.openTabs}
+              previewPath={editorTabs.previewPath}
+              activePath={editorTabs.activePath}
+              onActivate={handleActivateTab}
+              onClose={handleCloseTab}
+            />
+            <div className={styles.editorContent}>
+              {editorTabs.openTabs.length === 0 && <IdeEditorWatermark />}
+              {codeTabs.length > 0 && (
+                <IdeCodeEditor
+                  codeTabs={codeTabs}
+                  activePath={editorTabs.activePath}
+                  isVisible={activeTab?.kind === 'code'}
+                  contents={MOCK_FILE_CONTENTS}
+                />
+              )}
+              {activeTab?.kind === 'image' && (
+                <IdeImagePreview src={MOCK_IMAGE_SOURCES[activeTab.path] ?? ''} name={activeTab.name} />
+              )}
+            </div>
           </main>
         </div>
         {contextMenuPosition && (
@@ -250,6 +311,9 @@ export function LabViewer() {
             onClose={() => setOpenModal(null)}
             onDeleted={handleChangeRepo}
           />
+        </IdeModal>
+        <IdeModal isOpen={openModal === 'unsupportedFile'} onClose={() => setOpenModal(null)} size="small">
+          <IdeUnsupportedFileModal onClose={() => setOpenModal(null)} />
         </IdeModal>
       </div>
     </>

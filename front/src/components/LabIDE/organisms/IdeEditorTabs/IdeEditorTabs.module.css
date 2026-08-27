@@ -1,0 +1,81 @@
+.strip {
+  display: flex;
+  flex-shrink: 0;
+  height: 3.4rem;
+  background: var(--ide-color-titlebar-bg);
+  border-bottom: 1px solid var(--ide-color-border);
+  overflow-x: auto;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: var(--spacing-2xs);
+  height: 100%;
+  padding: 0 var(--spacing-xs);
+  max-width: 20rem;
+  border-right: 1px solid var(--ide-color-border);
+  cursor: pointer;
+}
+
+.tab:hover {
+  background: var(--ide-color-titlebar-hover-bg);
+}
+
+/* Active tab visually merges into the editor content below it (same background),
+   the same real VS Code convention (the active tab and the editor share one surface,
+   inactive tabs sit on the titlebar's own darker one). */
+.tabActive {
+  background: var(--ide-color-editor-bg);
+}
+
+.tabActive:hover {
+  background: var(--ide-color-editor-bg);
+}
+
+.icon {
+  flex-shrink: 0;
+  display: flex;
+}
+
+.name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--font-size-xs);
+  color: var(--ide-color-foreground);
+}
+
+.tabActive .name {
+  color: var(--color-text);
+}
+
+.namePreview {
+  font-style: italic;
+}
+
+.closeButton {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--ide-color-file-outline);
+  cursor: pointer;
+  opacity: 0;
+}
+
+.tab:hover .closeButton,
+.tabActive .closeButton {
+  opacity: 1;
+}
+
+.closeButton:hover {
+  background: var(--ide-color-list-hover-bg);
+}

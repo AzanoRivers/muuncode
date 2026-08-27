@@ -80,9 +80,21 @@
 }
 
 .editorArea {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   min-width: 0;
   background: var(--ide-color-editor-bg);
+}
+
+/* Everything below IdeEditorTabs' own fixed-height strip: watermark, Monaco, or the
+   image preview, whichever is showing. A separate flex item (not the tab strip's own
+   sibling watermark/editor rendered loose) so IdeEditorWatermark's own height: 100%
+   resolves against this region's height, not .editorArea's full height including the
+   tab strip above it. */
+.editorContent {
+  flex: 1;
+  min-height: 0;
 }
 
 /* Temporary content for both IdeModal instances below (command palette, commit

@@ -35,6 +35,11 @@
   --ide-color-danger-bg: #5A1D1D;
   --ide-color-danger-border: #BE1100;
 
+  /* Image preview's transparency checkerboard (IdeImagePreview): VS Code's own real
+     dark-theme value from extensions/media-preview/media/imagePreview.css
+     (rgb(20,20,20)), this project has no light theme to also need the light value. */
+  --ide-color-checkerboard: #141414;
+
   /* File-type (and folder) colors: Material Icon Theme's real per-extension mapping.
      Unlike Seti, every extension gets its own distinct color (JS and JSON no longer
      share one), and folders get color too instead of staying monochrome. */

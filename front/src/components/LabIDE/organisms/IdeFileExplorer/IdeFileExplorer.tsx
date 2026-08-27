@@ -13,6 +13,12 @@ interface IdeFileExplorerProps {
   // the intended seam for a future branch switcher once the app actually tracks the
   // repo's real current branch.
   branchName?: string
+  // Single click -> 'preview' (replaces the current preview tab), double click ->
+  // 'pinned' (opens/promotes a permanent tab). Only ever called for a file row, never
+  // a folder: LabViewer owns file-kind classification (code/image/unsupported) and
+  // what each mode actually does to EditorTabsState, this component only reports which
+  // path was clicked and how.
+  onOpenFile: (path: string, name: string, mode: 'preview' | 'pinned') => void
 }
 
 interface FileTreeNode {
@@ -67,7 +73,7 @@ function flattenTree(nodes: FileTreeNode[], depth: number, parentPath: string): 
 // target) lives here rather than in each FileTreeRow, since the drop indicator on one
 // row depends on what is being dragged elsewhere in the same tree; visual-only, no
 // actual reordering of MOCK_FILE_TREE happens on drop.
-export function IdeFileExplorer({ repoName, branchName = 'master' }: IdeFileExplorerProps) {
+export function IdeFileExplorer({ repoName, branchName = 'master', onOpenFile }: IdeFileExplorerProps) {
   const { t } = useTranslation()
   const [draggedKey, setDraggedKey] = useState<string | null>(null)
   const [dropTarget, setDropTarget] = useState<DropTarget | null>(null)
@@ -113,6 +119,8 @@ export function IdeFileExplorer({ repoName, branchName = 'master' }: IdeFileExpl
               onDragLeave={() => handleDragLeave(row.key)}
               onDrop={clearDragState}
               onDragEnd={clearDragState}
+              onClick={row.type === 'file' ? () => onOpenFile(row.key, row.name, 'preview') : undefined}
+              onDoubleClick={row.type === 'file' ? () => onOpenFile(row.key, row.name, 'pinned') : undefined}
             />
           ))}
         </div>

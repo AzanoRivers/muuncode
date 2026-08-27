@@ -1,0 +1,46 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  text-align: center;
+  color: var(--ide-color-foreground);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.message {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+.supportedTypes {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+  color: var(--ide-color-file-outline);
+}
+
+.button {
+  margin-top: var(--spacing-2xs);
+  height: 3.2rem;
+  padding: 0 var(--spacing-md);
+  font-family: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-text);
+  background: var(--ide-color-menu-selection-bg);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.button:hover {
+  filter: brightness(1.1);
+}

@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: var(--spacing-lg);
+  background: var(--ide-color-editor-bg);
+}
+
+/* Real VS Code checkerboard technique (extensions/media-preview/media/
+   imagePreview.css's dark-theme conic-gradient, see this file's own token comment in
+   ide-tokens.css), tiled via background-size so it reads as a grid instead of one
+   giant four-slice gradient covering the whole image. Applied directly to the <img>
+   itself, same as VS Code's own CSS, so it shows through the image's own transparent
+   pixels rather than sitting on a separate layer behind it. */
+.image {
+  max-width: 100%;
+  max-height: 100%;
+  background-image: conic-gradient(
+    var(--ide-color-checkerboard) 25%,
+    transparent 25% 50%,
+    var(--ide-color-checkerboard) 50% 75%,
+    transparent 75%
+  );
+  background-size: 20px 20px;
+}

@@ -1,0 +1,1 @@
+export { IdeEditorTabs } from './IdeEditorTabs'

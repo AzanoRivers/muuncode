@@ -16,6 +16,12 @@ interface FileTreeRowProps {
   onDragLeave: () => void
   onDrop: () => void
   onDragEnd: () => void
+  // Only ever called for type === 'file': IdeFileExplorer owns what "open" actually
+  // means (preview-replace vs. pin, unsupported-type modal), this row just reports the
+  // click count. Folders have no open behavior yet (always rendered pre-expanded, see
+  // this file's own comment above).
+  onClick?: () => void
+  onDoubleClick?: () => void
 }
 
 // One row of IdeFileExplorer's static mock tree: no click/select interaction yet (see
@@ -44,6 +50,8 @@ export function FileTreeRow({
   onDragLeave,
   onDrop,
   onDragEnd,
+  onClick,
+  onDoubleClick,
 }: FileTreeRowProps) {
   const handleDragStart = (event: DragEvent<HTMLDivElement>) => {
     event.dataTransfer.effectAllowed = 'move'
@@ -84,6 +92,8 @@ export function FileTreeRow({
       onDragLeave={onDragLeave}
       onDrop={handleDrop}
       onDragEnd={onDragEnd}
+      onClick={onClick}
+      onDoubleClick={onDoubleClick}
     >
       <span className={styles.twistie}>{type === 'folder' && <ChevronIcon size={14} />}</span>
       <span className={type === 'folder' ? `${styles.icon} ${styles.iconFolder}` : styles.icon}>

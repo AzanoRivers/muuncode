@@ -104,5 +104,10 @@
   "ideDeleteRepoConfirmButton": "Permanently delete",
   "ideDeleteRepoDeletingLabel": "Deleting...",
   "ideDeleteRepoErrorMessage": "Could not delete the repository. Please try again.",
+  "ideUnsupportedFileTitle": "Unsupported file type",
+  "ideUnsupportedFileMessage": "Here, Houston. We need to focus on the mission with the resources we have on the station.",
+  "ideUnsupportedFileSupportedTypes": "For now, MuunCode can only open HTML, CSS, JavaScript, JSON, Markdown files, and images (PNG, JPG, GIF, WEBP, SVG).",
+  "ideUnsupportedFileButton": "Got it",
+  "ideEditorTabCloseLabel": "Close tab",
   "ideSettingsButtonLabel": "Settings"
 }

@@ -1,3 +1,5 @@
+import { getFileExtension, IMAGE_EXTENSIONS } from '@/components/LabIDE/lib/fileKind'
+
 interface FileIconProps {
   fileName: string
   size?: number
@@ -23,13 +25,6 @@ const FILE_TYPE_STYLES: Record<string, FileTypeStyle> = {
   md: { color: 'var(--ide-color-file-markdown)', glyph: 'M' },
 }
 
-const IMAGE_EXTENSIONS = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'])
-
-function getExtension(fileName: string): string {
-  const dotIndex = fileName.lastIndexOf('.')
-  return dotIndex === -1 ? '' : fileName.slice(dotIndex + 1).toLowerCase()
-}
-
 const PAGE_PATH = 'M3.5 1.5h5.5l3.5 3.5v9a1 1 0 0 1-1 1h-8a1 1 0 0 1-1-1v-11.5a1 1 0 0 1 1-1z'
 const FOLD_PATH = 'M9 1.5v3.5h3.5z'
 
@@ -39,7 +34,7 @@ const FOLD_PATH = 'M9 1.5v3.5h3.5z'
 // Theme's own visual weight) with a small white monogram; images get a picture glyph
 // instead. Anything else falls back to a plain, uncolored outline page.
 export function FileIcon({ fileName, size = 16 }: FileIconProps) {
-  const extension = getExtension(fileName)
+  const extension = getFileExtension(fileName)
   const isImage = IMAGE_EXTENSIONS.has(extension)
   const style = FILE_TYPE_STYLES[extension]
   const color = isImage ? 'var(--ide-color-file-image)' : style?.color
